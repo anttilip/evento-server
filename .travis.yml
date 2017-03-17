@@ -16,6 +16,7 @@ deploy:
   app: evento-api
   on:
     repo: anttilip/evento-server
+  skip_cleanup: true
   run:
     - "cd evento"
     - "rake db:migrate"
