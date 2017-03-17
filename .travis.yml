@@ -18,7 +18,5 @@ deploy:
     repo: anttilip/evento-server
   skip_cleanup: true
   run:
-    - "cd evento"
     - "rake db:migrate"
     - restart
-    - "rake cleanup"
