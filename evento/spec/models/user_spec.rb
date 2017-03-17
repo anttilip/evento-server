@@ -1,6 +1,4 @@
 require 'rails_helper'
-require 'coveralls'
-Coveralls.wear!
 
 RSpec.describe User, type: :model do
   it "has a name" do
