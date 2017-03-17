@@ -1,4 +1,6 @@
 require 'rails_helper'
+require 'coveralls'
+Coveralls.wear!
 
 RSpec.describe Event, type: :model do
   it "has a title" do
