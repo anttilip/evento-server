@@ -9,3 +9,13 @@ script:
 - RAILS_ENV=test bundle exec rake db:migrate --trace
 - bundle exec rake db:test:prepare
 - bundle exec rspec -fd spec/
+deploy:
+  provider: heroku
+  app: evento-api
+  api_key:
+    secure: ZDc6cXqjRyG3xuhHI0wuco7/bDMnkcTyZA/DaV6LYtdwYMcURWqCGx+OThfvZsc1jSahS2wn5O+nvogcGnT7Gp/NCXD18xPeoXSy/xZu9FCYgTEYkO6FNAbjBzEvOVh1LlfBhMpQCc4NO0z/AcxtUw/2HZojiDq+0PcClR9NdSbKnrafKLZeQAxDL+BXuP9cY3gUNO14ZV4IK1aw+eKKCVKk5wojG1aGQuUNJ6X/nCB6uhQFNC9iRJalT+lcMmKYMP5vZP+YT5kOuIweiwceMAojvgcS2beTNV1VINa2hMfKkB0xbrV6yx57/Yc9QrOLw7jt+K2bG9QDaMPepvUkWAllrDEeXLZB+CkB0N2hhHTyXdfX+Hh+2oQY79qhmI8gNracJ5glSykSlIfSVrK2gISC+xTUO7d19tkEx16c5nMADQHHKNCsTZHCrraiitoS80swA5Zt5X1LwLtK1oXRgI5ePOuXBBQkId1zXpdLuhY27NcJdUh+TUOZpBXJ2R30XEyijzXAMzDA+EaC/fm9r5fBgHXNvIYhhmkl+6ZVj/ooU7Vn+BcvZIV8Bo28fKinbiKQAGP7BPm5/VJa6NURxMUhQH/7/VrkHDHXxKmJHuPjaL3DnhwOrSQ1Zit7ck7gIp7Z7OsDMxqdsTVrblhjKewiOLRPVthhFcAeOvwsp4o=
+    run:
+      - "cd evento"
+      - "rake db:migrate"
+      - restart
+      - "rake cleanup"
