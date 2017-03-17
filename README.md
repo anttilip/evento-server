@@ -1,6 +1,7 @@
 # evento-server
 
 [![Build Status](https://travis-ci.org/anttilip/evento-server.svg?branch=master)](https://travis-ci.org/anttilip/evento-server)
+[![Coverage Status](https://coveralls.io/repos/github/anttilip/evento-server/badge.svg?branch=master)](https://coveralls.io/github/anttilip/evento-server?branch=master)
 
 Rails back-end for evento.
 
