@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  description: MyString
+  category_id: 1
+  creator_id: 1
+  location: MyString
+  time: 2017-03-17 17:17:26
+
+two:
+  title: MyString
+  description: MyString
+  category_id: 1
+  creator_id: 1
+  location: MyString
+  time: 2017-03-17 17:17:26
