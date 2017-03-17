@@ -1,5 +1,7 @@
 # evento-server
 
+[![Build Status](https://travis-ci.org/anttilip/evento-server.svg?branch=master)](https://travis-ci.org/anttilip/evento-server)
+
 Rails back-end for evento.
 
 [**Front-end repo**](https://github.com/JaakkoLipsanen/evento-web)
