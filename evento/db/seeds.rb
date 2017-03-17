@@ -6,11 +6,14 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-User.create name: "Antti", email: "antti@gmail.com"
-User.create name: "Jaakko", email: "jaakko@outlook.com"
+u1 = User.create name: "Antti", email: "antti@gmail.com"
+u2 = User.create name: "Jaakko", email: "jaakko@outlook.com"
+u3 = User.create name: "Seppo", email: "seppo@cs.helsinki.fi"
 
-Category.create name:"Music"
-Category.create name:"Sports"
+music = Category.create name:"Music"
+sports = Category.create name:"Sports"
+badminton =  Category.create name:"Sports", parent_id: sports.id
 
-Event.create title: "Piano with bros", description: "", category_id: 1, creator_id: 2
-Event.create title: "Sulis with bros", description: "", category_id: 2, creator_id: 1
+piano = Event.create title: "Piano with bros", description: "", category_id: music.id, creator_id: u2.id
+sulis = Event.create title: "Sulis with bros", description: "", category_id: badminton.id, creator_id: u1.id
+lenkki = Event.create title: "Lenkkeilyn alkeet", description: "Kumpulan ympäri", category_id: sports.id, creator_id: u3.id
