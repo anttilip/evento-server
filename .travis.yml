@@ -11,11 +11,13 @@ script:
 - bundle exec rspec -fd spec/
 deploy:
   provider: heroku
-  app: evento-api
   api_key:
-    secure: ZDc6cXqjRyG3xuhHI0wuco7/bDMnkcTyZA/DaV6LYtdwYMcURWqCGx+OThfvZsc1jSahS2wn5O+nvogcGnT7Gp/NCXD18xPeoXSy/xZu9FCYgTEYkO6FNAbjBzEvOVh1LlfBhMpQCc4NO0z/AcxtUw/2HZojiDq+0PcClR9NdSbKnrafKLZeQAxDL+BXuP9cY3gUNO14ZV4IK1aw+eKKCVKk5wojG1aGQuUNJ6X/nCB6uhQFNC9iRJalT+lcMmKYMP5vZP+YT5kOuIweiwceMAojvgcS2beTNV1VINa2hMfKkB0xbrV6yx57/Yc9QrOLw7jt+K2bG9QDaMPepvUkWAllrDEeXLZB+CkB0N2hhHTyXdfX+Hh+2oQY79qhmI8gNracJ5glSykSlIfSVrK2gISC+xTUO7d19tkEx16c5nMADQHHKNCsTZHCrraiitoS80swA5Zt5X1LwLtK1oXRgI5ePOuXBBQkId1zXpdLuhY27NcJdUh+TUOZpBXJ2R30XEyijzXAMzDA+EaC/fm9r5fBgHXNvIYhhmkl+6ZVj/ooU7Vn+BcvZIV8Bo28fKinbiKQAGP7BPm5/VJa6NURxMUhQH/7/VrkHDHXxKmJHuPjaL3DnhwOrSQ1Zit7ck7gIp7Z7OsDMxqdsTVrblhjKewiOLRPVthhFcAeOvwsp4o=
-    run:
-      - "cd evento"
-      - "rake db:migrate"
-      - restart
-      - "rake cleanup"
+    secure: IDND5d/UbnNC4fXqTNEAOxwl9WRNneZVqDLNzBNA25nl3gNhmdnvUppAeFU7SfY94g6D+sQivJq7sAPdY7YQQ1Ubw0kzhnEvHtGdKXKHIp9mZuRdPGSc2ETHRtNW/0l+CBNqSZifw/bWW3KGuqk2waWR5EquCypiZAenFsJU5O4viK+YDmYfjDaWPLPsnuzielxj6HcTYWVLfQnXXMzo0jS0sp+wD1l1VuUNQk+t93f57Bzq+iLXUYJKuYmebrqdktDYtzPoudocNFGTvM6PZqOykuh+7A/zCJDZ0wnUJ7F/eIP4ohyY1M5WomL9LSahgwujzyniV5v5OknnB+eRUYj3kQ32TdwvV0Ulei3kD6VRSR/3ZddHa98mZMCK3l2M6P4CPy1LQ70ZtsXHu1aDUOIfE9zL/kP+oFKzNizbSO2o7/mkjIywtEFT0Rv7jetlewhJzRiLVKQgYedph8v8dYPZw5Ng7RwGu8am6KvJAHTBhmDof9gUEwUDtTkdu2ef+s/1fKZcTuAM1oPb18UzooGTtMg6eXvmbEYacXOFmqSYN9/iFSj5nYFz96YG3lVU6rG6IirF+K10RE81fM31KJTdDTfnbVlPQxhWmffECdZdxM0eAysVCzh3NDwzIVFTWbvYJhADBboW4aNOCNDE2AAHrgRjYK+X+Pfr6aKsprA=
+  app: evento-api
+  on:
+    repo: anttilip/evento-server
+  run:
+    - "cd evento"
+    - "rake db:migrate"
+    - restart
+    - "rake cleanup"
