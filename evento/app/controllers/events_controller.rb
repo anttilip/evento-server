@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :update, :destroy]
+  before_action :set_event, only: [:show, :update, :destroy, :attendees]
 
   # GET /events
   def index
@@ -13,6 +13,9 @@ class EventsController < ApplicationController
     render json: @event
   end
 
+  def attendees
+    render json: @event.attendees
+  end
   # POST /events
   def create
     @event = Event.new(event_params)
