@@ -4,5 +4,7 @@ Rails.application.routes.draw do
   resources :users
 
   get '/events/:id/attendees', to: 'events#attendees'
+  get '/categories/:id/events', to: 'categories#events'
+  get '/categories/:id/subcategories', to: 'categories#subcategories'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
