@@ -30,9 +30,9 @@ ActiveRecord::Schema.define(version: 20170317152618) do
     t.datetime "updated_at",  null: false
   end
 
-  create_table "user_events", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "event_id"
+  create_table :events_users, id: false, force: :cascade do |t|
+    t.belongs_to :user, index: true
+    t.belongs_to :event, index: true
   end
 
   create_table "users", force: :cascade do |t|
