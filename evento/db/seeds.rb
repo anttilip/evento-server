@@ -12,7 +12,7 @@ u3 = User.create name: "Seppo", email: "seppo@cs.helsinki.fi"
 
 music = Category.create name:"Music"
 sports = Category.create name:"Sports"
-badminton =  Category.create name:"Sports", parent_id: sports.id
+badminton =  Category.create name:"Badminton", parent_id: sports.id
 
 piano = Event.create title: "Piano with bros", description: "", category_id: music.id, creator_id: u2.id
 sulis = Event.create title: "Sulis with bros", description: "", category_id: badminton.id, creator_id: u1.id
