@@ -35,6 +35,12 @@ group :development, :test do
 
   # Use RSpec for tests
   gem 'rspec-rails', '>= 3.5.0'
+  
+  # factory_girl_rails gem
+  gem 'factory_girl_rails'
+  
+  # Faker for tests
+  gem 'faker'
 
   # Coveralls gem
   gem 'coveralls', require: false
