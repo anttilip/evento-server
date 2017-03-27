@@ -78,4 +78,17 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  # Config rate-limit
+  config.middleware.use Rack::Throttle::Minute, :max => 60
+  config.middleware.use Rack::Throttle::Hourly, :max => 1500
+
+  # Config Cross-Origin Resource Sharing
+  config.middleware.insert_before 0, Rack::Cors do
+    allow do
+      # TODO: These can be changed to match only specific urls like flai.xyz/evento
+      origins '*'
+      resource '*', :headers => :any, :methods => [:get, :post, :options]
+    end
+  end
 end

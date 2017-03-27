@@ -26,12 +26,6 @@ gem 'active_model_serializers'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-# Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
-gem 'rack-cors'
-
-# Use Rack Throttle for rate-limiting requests
-gem 'rack-throttle'
-
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
@@ -66,6 +60,12 @@ end
 group :production do
     # Postgres
     gem 'pg'
+
+    # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
+    gem 'rack-cors'
+
+    # Use Rack Throttle for rate-limiting requests
+    gem 'rack-throttle'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
