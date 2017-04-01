@@ -17,7 +17,11 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
-# Set Coveralls plugin 
+# Set simplecov plugin
+require 'simplecov'
+SimpleCov.start 'rails'
+
+# Set Coveralls plugin
 require 'coveralls'
 Coveralls.wear!
 
