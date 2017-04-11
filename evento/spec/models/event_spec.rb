@@ -1,42 +1,33 @@
 require 'rails_helper'
 
 RSpec.describe Event, type: :model do
-  it "has a title" do
-    event = Event.new title: "Birthday party"
-    expect(event.title).to eq("Birthday party")
-  end
+  let (:user) { FactoryGirl.create(:user) }
+  let (:category) { FactoryGirl.create(:category) }
+  let (:event) { FactoryGirl.build(:event, creator_id: user.id, category_id: category.id) }
 
   it "is saved with proper title, category and creator" do
-    sports = Category.create name: "Sports"
-    matti = User.create name: "Matti", email: "matti@cs.helsinki.fi"
-    bodypump = Event.create title: "Bodypump", category_id: sports.id, creator_id: matti.id
-
-    expect(bodypump).to be_valid
-    expect(Event.count).to eq(1)
+    expect(event).to be_valid
+    expect(event.save).to be_truthy
   end
 
   it "is not saved without user existing" do
-    sports = Category.create name: "Sports"
-    bodypump = Event.create title: "Bodypump", category_id: sports.id, creator_id: 1
+    without_creator = FactoryGirl.build(:event, creator_id: -1)
 
-    expect(bodypump).not_to be_valid
-    expect(Event.count).to eq(0)
+    expect(without_creator).not_to be_valid
+    expect(without_creator.save).to be_falsey
   end
 
   it "is not saved without category existing" do
-    matti = User.create name: "Matti", email: "matti@cs.helsinki.fi"
-    bodypump = Event.create title: "Bodypump", category_id: 1, creator_id: matti.id
+    without_category = FactoryGirl.build(:event, category_id: -1)
 
-    expect(bodypump).not_to be_valid
-    expect(Event.count).to eq(0)
+    expect(without_category).not_to be_valid
+    expect(without_category.save).to be_falsey
   end
 
   it "is not saved with too short title" do
-    sports = Category.create name: "Sports"
-    matti = User.create name: "Matti", email: "matti@cs.helsinki.fi"
-    bodypump = Event.create title: "", category_id: sports.id, creator_id: matti.id
+    too_short_title = FactoryGirl.build(:event, title: '')
 
-    expect(bodypump).not_to be_valid
-    expect(Event.count).to eq(0)
+    expect(too_short_title).not_to be_valid
+    expect(too_short_title.save).to be_falsey
   end
 end

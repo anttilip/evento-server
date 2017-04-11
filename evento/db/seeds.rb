@@ -6,9 +6,9 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-u1 = User.create name: "Antti", email: "antti@gmail.com"
-u2 = User.create name: "Jaakko", email: "jaakko@outlook.com"
-u3 = User.create name: "Seppo", email: "seppo@cs.helsinki.fi"
+u1 = User.create name: "Antti", email: "antti@gmail.com", password: "salasana123"
+u2 = User.create name: "Jaakko", email: "jaakko@outlook.com", password: "password123"
+u3 = User.create name: "Seppo", email: "seppo@cs.helsinki.fi", password: "losenord123"
 
 music = Category.create name:"Music"
 sports = Category.create name:"Sports"
@@ -19,4 +19,5 @@ sulis = Event.create title: "Sulis with bros", description: "", category_id: bad
 lenkki = Event.create title: "Lenkkeilyn alkeet", description: "Kumpulan ympäri", category_id: sports.id, creator_id: u3.id
 
 u1.events << piano
+u2.events << lenkki
 sulis.users << u1 << u2

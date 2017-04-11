@@ -1,64 +1,47 @@
 require 'rails_helper'
 
 RSpec.describe Category, type: :model do
-  it "has a name" do
-    category = Category.new name: "Sports"
-    expect(category.name).to eq("Sports")
-  end
+  let(:category) { FactoryGirl.create(:category) }
 
   it "is saved with proper name" do
-    category = Category.create name: "Sports"
-
     expect(category).to be_valid
-    expect(Category.count).to eq(1) 
+    expect(category.save).to be_truthy
   end
 
   it "is not saved with too short name" do
-    category = Category.create name: ""
+    too_short = FactoryGirl.build(:category, name: '')
 
-    expect(category).not_to be_valid
-    expect(Category.count).to eq(0) 
+    expect(too_short).not_to be_valid
+    expect(too_short.save).to be_falsey 
   end
 
   it "is not saved with too long name" do
-    category = Category.create name: "this is way too long name for a category"
+    too_long = FactoryGirl.build(:category, name: 'this is waaay too long name for a category')
 
-    expect(category).not_to be_valid
-    expect(Category.count).to eq(0) 
+    expect(too_long).not_to be_valid
+    expect(too_long.save).to be_falsey 
   end
 
   it "get_subcategories returns subcategories" do
-    sports = Category.create name: "Sports"
-    badminton = Category.create name: "Badminton", parent_id: sports.id
-    football = Category.create name: "Football", parent_id: sports.id
-
-    expect(sports.get_subcategories).to match_array([badminton, football])
+    subcategories = FactoryGirl.create_list(:category, 15, parent_id: category.id)
+    expect(category.get_subcategories).to match_array(subcategories)
   end
 
   it "get_subcategories returns empty array when category does not have a subcategory" do
-    sports = Category.create name: "Sports"
-    expect(sports.get_subcategories).to match_array([])
+    expect(category.get_subcategories).to match_array([])
   end
 
   it "get_events returns own events" do
-    sports = Category.create name: "Sports"
-    User.create name: "Antti", email: "antti@gmail.com" # Must be one user to create events
-
-    juoksu = Event.create title: "Juoksun alkeet", category_id: sports.id, creator_id: 1
-    bodaus = Event.create title: "Painonnosto", category_id: sports.id, creator_id: 1
-
-    expect(sports.get_events).to match_array([juoksu, bodaus])
+    events = FactoryGirl.create_list(:event, 15, category_id: category.id)
+    expect(category.get_events).to match_array(events)
   end
 
   it "get_events returns also subcategory events" do
-    sports = Category.create name: "Sports"
-    badminton = Category.create name: "Badminton", parent_id: sports.id
-    User.create name: "Antti", email: "antti@gmail.com" # Must be one user to create events
+    events = FactoryGirl.create_list(:event, 15, category_id: category.id)
 
-    juoksu = Event.create title: "Juoksun alkeet", category_id: sports.id, creator_id: 1
-    bodaus = Event.create title: "Painonnosto", category_id: sports.id, creator_id: 1
-    sulis = Event.create title: "Sulkapallokisat", category_id: badminton.id, creator_id: 1
+    subcategories = FactoryGirl.create_list(:category, 15, parent_id: category.id)
+    s_events = subcategories.map { |s| FactoryGirl.create(:event, category_id: s.id)}
 
-    expect(sports.get_events).to match_array([juoksu, bodaus, sulis])
+    expect(category.get_events).to match_array(events + s_events)
   end
 end

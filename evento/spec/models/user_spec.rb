@@ -1,30 +1,39 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  it "has a name" do
-    user = User.new name: "Pekka"
-    expect(user.name).to eq("Pekka")
-  end
+  let(:user) { FactoryGirl.build(:user) }
 
-  it "is saved with proper name and email" do
-    user = User.create name: "Pekka", email: "pekka@cs.helsinki.fi"
-
+  it "is saved with proper name, email and password" do
     expect(user).to be_valid
-    expect(User.count).to eq(1) 
+    expect(user.save).to be_truthy
   end
 
   it "is not saved without email" do
-    user = User.create name: "Pekka"
+    without_email = FactoryGirl.build(:user, email: nil)
 
-    expect(user).not_to be_valid
-    expect(User.count).to eq(0) 
+    expect(without_email).not_to be_valid
+    expect(without_email.save).to be_falsey
+  end
+  
+  it "is not saved without password" do
+    without_password = FactoryGirl.build(:user, password: nil)
+
+    expect(without_password).not_to be_valid
+    expect(without_password.save).to be_falsey
+  end
+  
+  it "is not saved with empty password" do
+    without_password = FactoryGirl.build(:user, password: '')
+
+    expect(without_password).not_to be_valid
+    expect(without_password.save).to be_falsey
   end
   
   it "is not saved without unique email" do
-    User.create name: "Pekka", email: "paras@cs.helsinki.fi"
-    user = User.create name: "Jussi", email: "paras@cs.helsinki.fi"
-
-    expect(user).not_to be_valid
-    expect(User.count).to eq(1) 
+    with_same_email = FactoryGirl.build(:user, email: user.email)
+    
+    user.save # Original user must be in database 
+    expect(with_same_email).not_to be_valid
+    expect(with_same_email.save).to be_falsey
   end
 end

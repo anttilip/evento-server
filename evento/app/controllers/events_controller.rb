@@ -1,5 +1,6 @@
 class EventsController < ApplicationController
   before_action :set_event, only: [:show, :update, :destroy, :attendees]
+  skip_before_action :authenticate_request, only: [:index, :show, :attendees]
 
   # GET /events
   def index
@@ -13,12 +14,16 @@ class EventsController < ApplicationController
     render json: @event
   end
 
+  # GET /events/1/attendees
   def attendees
     render json: @event.attendees
   end
+
   # POST /events
   def create
-    @event = Event.new(event_params)
+    # Add @current_user.id to create_params. Only user who sent the request 
+    # should be the creator
+    @event = Event.new(event_params.merge(creator_id: @current_user.id))
 
     if @event.save
       render json: @event, status: :created, location: @event
@@ -29,7 +34,9 @@ class EventsController < ApplicationController
 
   # PATCH/PUT /events/1
   def update
-    if @event.update(event_params)
+    if @current_user.id != @event.creator_id
+      render json: { error: 'Not Authorized' }, status: 401
+    elsif @event.update(event_params)
       render json: @event
     else
       render json: @event.errors, status: :unprocessable_entity
@@ -38,17 +45,23 @@ class EventsController < ApplicationController
 
   # DELETE /events/1
   def destroy
-    @event.destroy
+    if @current_user.id == @event.creator_id
+      @event.destroy
+      render status: 200
+    else
+      render json: { error: 'Not Authorized' }, status: 401
+    end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_event
-      @event = Event.find(params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def event_params
-      params.require(:event).permit(:title, :description, :category_id, :creator_id, :location, :time)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_event
+    @event = Event.find(params[:id])
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def event_params
+    params.require(:event).permit(:title, :description, :category_id, :location, :time)
+  end
 end

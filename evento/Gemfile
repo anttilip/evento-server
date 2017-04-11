@@ -16,6 +16,15 @@ gem 'puma', '~> 3.0'
 # ALlows specifying attributes to be serialized on models
 gem 'active_model_serializers'
 
+# Use bcrypt for authentiacion
+gem 'bcrypt'
+
+# JSON Web Token 
+gem 'jwt'
+
+# Use SimpleCommand for commands
+gem 'simple_command'
+
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production

@@ -1,6 +1,16 @@
 class ApplicationController < ActionController::API
+  before_action :authenticate_request
+  attr_reader :current_user
+  
   rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
   rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_response
+
+  private
+
+  def authenticate_request
+    @current_user = AuthorizeApiRequest.call(request.headers).result
+    render json: { error: 'Not Authorized' }, status: 401 unless @current_user
+  end
 
   def render_unprocessable_entity_response(exception)
     render json: exception.record.errors, status: :unprocessable_entity

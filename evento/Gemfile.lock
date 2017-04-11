@@ -44,6 +44,7 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     arel (7.1.4)
+    bcrypt (3.1.11)
     builder (3.2.3)
     byebug (9.0.6)
     case_transform (0.2)
@@ -71,6 +72,7 @@ GEM
     i18n (0.8.1)
     json (2.0.3)
     jsonapi-renderer (0.1.2)
+    jwt (1.5.6)
     listen (3.0.8)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -140,6 +142,7 @@ GEM
       rspec-mocks (~> 3.5.0)
       rspec-support (~> 3.5.0)
     rspec-support (3.5.0)
+    simple_command (0.0.9)
     simplecov (0.12.0)
       docile (~> 1.1.0)
       json (>= 1.8, < 3)
@@ -174,10 +177,12 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers
+  bcrypt
   byebug
   coveralls
   factory_girl_rails
   faker
+  jwt
   listen (~> 3.0.5)
   pg
   puma (~> 3.0)
@@ -186,6 +191,7 @@ DEPENDENCIES
   rails (~> 5.0.2)
   rake
   rspec-rails (>= 3.5.0)
+  simple_command
   spring
   spring-watcher-listen (~> 2.0.0)
   sqlite3
