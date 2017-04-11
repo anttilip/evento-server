@@ -56,8 +56,8 @@ RSpec.describe "Event API" do
 
       db_event = Event.find(json['id']);
       expect(db_event.title).to eq event.title
-      expect(db_event.id).to eq user.id
-      expect(db_event.id).to eq event.category_id
+      expect(db_event.creator_id).to eq user.id
+      expect(db_event.category_id).to eq event.category_id
     end
 
     it 'returns 422 if event is created without title' do

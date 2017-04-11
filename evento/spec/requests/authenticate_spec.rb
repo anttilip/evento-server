@@ -8,6 +8,19 @@ RSpec.describe "Authenticate API" do
       post '/authenticate', params: { email: user.email, password: user.password }
       expect(json["auth_token"]).not_to eq(nil)
     end
+    
+    it 'returns correct user' do 
+      post '/authenticate', params: { email: user.email, password: user.password }
+      
+      expect(json["user"]["id"]).to eq(user.id)
+      expect(json["user"]["name"]).to eq(user.name)
+      expect(json["user"]["email"]).to eq(user.email)
+    end
+
+    it 'does not return user\'s password_digest' do
+      post '/authenticate', params: { email: user.email, password: user.password }
+      expect(json["user"]["password_digest"]).to eq(nil)
+    end
 
     it 'returns code 200' do
       post '/authenticate', params: { email: user.email, password: user.password }
@@ -24,6 +37,13 @@ RSpec.describe "Authenticate API" do
     it 'returns code 401' do  
       post '/authenticate', params: { email: user.email, password: "wrong_password" }
       expect(response.status).to eq(401)
+    end
+    
+    it 'does not return user' do   
+      post '/authenticate', params: { email: user.email, password: "wrong_password" }
+      
+      expect(response.status).to eq(401)
+      expect(json["user"]).to eq(nil)
     end
   end
 
