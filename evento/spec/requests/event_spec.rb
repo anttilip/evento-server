@@ -59,6 +59,18 @@ RSpec.describe "Event API" do
       expect(db_event.creator_id).to eq user.id
       expect(db_event.category_id).to eq event.category_id
     end
+    
+    it 'adds the creator to the newly created event as an attendee' do
+      event = FactoryGirl.build(:event, creator_id: user.id) # Is not added to database yet
+      params = { title: event.title, category_id: event.category_id }
+      post "/events/", params: params.to_json, headers: header
+      
+      db_event = Event.find(json['id']);
+      user.reload
+      
+      expect(db_event.attendees).to include(user)
+      expect(user.events).to include(db_event)
+    end
 
     it 'returns 422 if event is created without title' do
       event = FactoryGirl.build(:event, title: '') # Is not added to database yet

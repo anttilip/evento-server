@@ -26,6 +26,10 @@ class EventsController < ApplicationController
     @event = Event.new(event_params.merge(creator_id: @current_user.id))
 
     if @event.save
+      # add the creator to the attendees
+      @event.attendees << @current_user
+      @event.save
+
       render json: @event, status: :created, location: @event
     else
       render json: @event.errors, status: :unprocessable_entity
