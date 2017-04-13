@@ -5,7 +5,7 @@ RSpec.describe Event, type: :model do
   let (:category) { FactoryGirl.create(:category) }
   let (:event) { FactoryGirl.build(:event, creator_id: user.id, category_id: category.id) }
 
-  it "is saved with proper title, category and creator" do
+  it "is saved with proper title, time, category and creator" do
     expect(event).to be_valid
     expect(event.save).to be_truthy
   end
@@ -29,5 +29,33 @@ RSpec.describe Event, type: :model do
 
     expect(too_short_title).not_to be_valid
     expect(too_short_title.save).to be_falsey
+  end
+  
+  it "is not saved with too long title" do
+    too_long_title = FactoryGirl.build(:event, title: 'a' * 100)
+
+    expect(too_long_title).not_to be_valid
+    expect(too_long_title.save).to be_falsey
+  end
+  
+  it "is not saved without title" do
+    no_title = FactoryGirl.build(:event, title: nil)
+
+    expect(no_title).not_to be_valid
+    expect(no_title.save).to be_falsey
+  end
+  
+  it "is not saved without time" do
+    no_title = FactoryGirl.build(:event, time: nil)
+
+    expect(no_title).not_to be_valid
+    expect(no_title.save).to be_falsey
+  end
+  
+  it "is not saved with time in the past" do
+    invalid_time = FactoryGirl.build(:event, time: Time.now - 1.hour)
+
+    expect(invalid_time).not_to be_valid
+    expect(invalid_time.save).to be_falsey
   end
 end

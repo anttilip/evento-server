@@ -39,9 +39,9 @@ RSpec.describe "Event API" do
 
     it 'returns 201 when get event is created with valid properties' do
       event = FactoryGirl.build(:event, creator_id: user.id) # Is not added to database yet
-      params = { title: event.title, category_id: event.category_id }
+      params = { title: event.title, category_id: event.category_id, time: event.time }
       post "/events/", params: params.to_json, headers: header
-
+      
       expect(response.status).to eq(201)
       expect(json["title"]).to eq event.title
       expect(json["creator"]["id"]).to eq user.id
@@ -51,7 +51,7 @@ RSpec.describe "Event API" do
 
     it 'saves newly created event to database' do
       event = FactoryGirl.build(:event, creator_id: user.id) # Is not added to database yet
-      params = { title: event.title, category_id: event.category_id }
+      params = { title: event.title, category_id: event.category_id, time: event.time }
       post "/events/", params: params.to_json, headers: header
 
       db_event = Event.find(json['id']);
@@ -82,7 +82,7 @@ RSpec.describe "Event API" do
       other_user = FactoryGirl.create(:user)
 
       event = FactoryGirl.build(:event, creator_id: other_user.id) # Is not added to database yet
-      params = { title: event.title, category_id: event.category_id, creator_id: event.creator_id }
+      params = { title: event.title, category_id: event.category_id, time: event.time, creator_id: event.creator_id }
       post "/events/", params: params.to_json, headers: header
 
       expect(response.status).to eq(201)
