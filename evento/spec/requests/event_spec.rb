@@ -25,7 +25,7 @@ RSpec.describe "Event API" do
       delete '/events/-1'
       expect(response.status).to eq(401)
     end
-    
+
     it 'returns 401 when post /events/:id/attendees is called' do
       post "/events/#{event.id}/attendees", params: { user_id: user.id }.to_json
       expect(response.status).to eq(401)
@@ -35,10 +35,10 @@ RSpec.describe "Event API" do
   context 'with authentication' do
     let(:header) { { Authorization: json["auth_token"], CONTENT_TYPE: "application/json" } }
 
-    before(:each) do 
+    before(:each) do
       post '/authenticate', params: { email: user.email, password: user.password }
-      
-      expect(response.status).to eq(200)  
+
+      expect(response.status).to eq(200)
       expect(json["auth_token"]).not_to eq(nil)
     end
 
@@ -46,7 +46,7 @@ RSpec.describe "Event API" do
       event = FactoryGirl.build(:event, creator_id: user.id) # Is not added to database yet
       params = { title: event.title, category_id: event.category_id, time: event.time }
       post "/events/", params: params.to_json, headers: header
-      
+
       expect(response.status).to eq(201)
       expect(json["title"]).to eq event.title
       expect(json["creator"]["id"]).to eq user.id
@@ -64,15 +64,17 @@ RSpec.describe "Event API" do
       expect(db_event.creator_id).to eq user.id
       expect(db_event.category_id).to eq event.category_id
     end
-    
+
     it 'adds the creator to the newly created event as an attendee' do
       event = FactoryGirl.build(:event, creator_id: user.id) # Is not added to database yet
-      params = { title: event.title, category_id: event.category_id }
+      params = { title: event.title, category_id: event.category_id, time: event.time }
+
       post "/events/", params: params.to_json, headers: header
-      
+      expect(response.success?).to be_truthy
+
       db_event = Event.find(json['id']);
       user.reload
-      
+
       expect(db_event.attendees).to include(user)
       expect(user.events).to include(db_event)
     end
@@ -107,15 +109,15 @@ RSpec.describe "Event API" do
       expect(Event.where(creator_id: user.id).length).to eq 1 # User is the creator
     end
 
-    it 'updates event and returns 200 when put /events/#{event.id}/ is requested' do 
+    it 'updates event and returns 200 when put /events/#{event.id}/ is requested' do
       put "/events/#{event.id}", params: { title: "NewTitle" }.to_json, headers: header
 
-      event.reload  
+      event.reload
       expect(response.status).to eq(200)
       expect(event.title).to eq("NewTitle")
     end
 
-    it 'returns 404 when put /events/-1/ is requested' do 
+    it 'returns 404 when put /events/-1/ is requested' do
       put "/events/-1", params: { title: "NewTitle" }.to_json, headers: header
       expect(response.status).to be(404)
     end
@@ -124,7 +126,7 @@ RSpec.describe "Event API" do
       too_short_title = "A"
 
       put "/events/#{event.id}", params: { title: too_short_title }.to_json, headers: header
-      expect(response.status).to eq(422)   
+      expect(response.status).to eq(422)
     end
 
     it 'returns 401 when authenticated user tries to update other users event' do
@@ -138,7 +140,7 @@ RSpec.describe "Event API" do
     it 'deletes event and returns 200 when delete /events/#{event.id}/ is requested' do
       delete "/events/#{event.id}", headers: header
 
-      expect(Event.exists?(event.id)).to eq(false)   
+      expect(Event.exists?(event.id)).to eq(false)
       expect(response.status).to eq(200)
     end
 
@@ -151,13 +153,13 @@ RSpec.describe "Event API" do
       other_user = FactoryGirl.create(:user)
       other_users_event = FactoryGirl.create(:event, creator_id: other_user.id, category_id: category.id)
       delete "/events/#{other_users_event.id}", headers: header
- 
+
       expect(response.status).to eq(401)
     end
 
     it 'returns 204 when post /events/:id/attendees is called with self' do
       post "/events/#{event.id}/attendees", params: { user_id: user.id }.to_json, headers: header
-      
+
       expect(response.status).to eq(204)
       expect(event.attendees).to include(user)
     end
