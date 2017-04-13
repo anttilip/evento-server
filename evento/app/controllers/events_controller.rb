@@ -1,11 +1,10 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :update, :destroy, :attendees]
+  before_action :set_event, only: [:show, :update, :destroy, :attendees, :add_attendee]
   skip_before_action :authenticate_request, only: [:index, :show, :attendees]
 
   # GET /events
   def index
     @events = Event.includes(:user, :category).all
-
     render json: @events
   end
 
@@ -17,6 +16,21 @@ class EventsController < ApplicationController
   # GET /events/1/attendees
   def attendees
     render json: @event.attendees
+  end
+
+  # POST /events/:id/attendees
+  def add_attendee
+    user = User.find(params[:user_id])
+    
+    if user != @current_user
+      render json: { error: 'Not Authorized' }, status: 401
+    elsif @event.attendees.include?(user)
+      render json: { message: 'You are already attendee of the event' }, status: 304
+    else
+      # success !
+      @event.attendees << user
+      @event.save # is this required? dunno. user.save? no clue
+    end
   end
 
   # POST /events

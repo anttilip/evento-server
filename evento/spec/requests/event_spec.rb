@@ -25,6 +25,11 @@ RSpec.describe "Event API" do
       delete '/events/-1'
       expect(response.status).to eq(401)
     end
+    
+    it 'returns 401 when post /events/:id/attendees is called' do
+      post "/events/#{event.id}/attendees", params: { user_id: user.id }.to_json
+      expect(response.status).to eq(401)
+    end
   end
 
   context 'with authentication' do
@@ -148,6 +153,32 @@ RSpec.describe "Event API" do
       delete "/events/#{other_users_event.id}", headers: header
  
       expect(response.status).to eq(401)
+    end
+
+    it 'returns 204 when post /events/:id/attendees is called with self' do
+      post "/events/#{event.id}/attendees", params: { user_id: user.id }.to_json, headers: header
+      
+      expect(response.status).to eq(204)
+      expect(event.attendees).to include(user)
+    end
+
+    it 'returns 304 when post /events/:id/attendees is called with self if already attending' do
+      post "/events/#{event.id}/attendees", params: { user_id: user.id }.to_json, headers: header
+      expect(response.status).to eq(204)
+      expect(event.attendees).to include(user)
+
+      # try again
+      post "/events/#{event.id}/attendees", params: { user_id: user.id }.to_json, headers: header
+      expect(response.status).to eq(304)
+    end
+
+    it 'returns 401 when post /events/:id/attendees is called with another user' do
+      other_user = FactoryGirl.create(:user)
+      post "/events/#{event.id}/attendees", params: { user_id: other_user.id }.to_json, headers: header
+
+      expect(response.status).to eq(401)
+      expect(event.attendees).not_to include(other_user)
+      expect(event.attendees).not_to include(user)
     end
   end
 
