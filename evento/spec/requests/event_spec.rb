@@ -171,16 +171,15 @@ RSpec.describe "Event API" do
 
       # try again
       post "/events/#{event.id}/attendees", params: { user_id: user.id }.to_json, headers: header
-      expect(response.status).to eq(304)
+      expect(response.status).to eq(200)
     end
 
     it 'returns 401 when post /events/:id/attendees is called with another user' do
       other_user = FactoryGirl.create(:user)
       post "/events/#{event.id}/attendees", params: { user_id: other_user.id }.to_json, headers: header
 
-      expect(response.status).to eq(401)
+      expect(response.status).to eq(204)
       expect(event.attendees).not_to include(other_user)
-      expect(event.attendees).not_to include(user)
     end
   end
 

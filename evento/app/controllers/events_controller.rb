@@ -20,16 +20,13 @@ class EventsController < ApplicationController
 
   # POST /events/:id/attendees
   def add_attendee
-    user = User.find(params[:user_id])
-    
-    if user != @current_user
-      render json: { error: 'Not Authorized' }, status: 401
-    elsif @event.attendees.include?(user)
-      render json: { message: 'You are already attendee of the event' }, status: 304
+    if @event.attendees.include?(@current_user)
+      render json: { message: 'You are already attendee of the event' }, status: 200
     else
       # success !
-      @event.attendees << user
-      @event.save # is this required? dunno. user.save? no clue
+      @event.attendees << @current_user
+      @event.save
+      render status: 204
     end
   end
 

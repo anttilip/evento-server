@@ -14,9 +14,9 @@ music = Category.create name:"Music"
 sports = Category.create name:"Sports"
 badminton =  Category.create name:"Badminton", parent_id: sports.id
 
-piano = Event.create title: "Piano with bros", description: "", category_id: music.id, creator_id: u2.id
-sulis = Event.create title: "Sulis with bros", description: "", category_id: badminton.id, creator_id: u1.id
-lenkki = Event.create title: "Lenkkeilyn alkeet", description: "Kumpulan ympäri", category_id: sports.id, creator_id: u3.id
+piano = Event.create title: "Piano with bros", description: "", category_id: music.id, creator_id: u2.id, time: Date.tomorrow
+sulis = Event.create title: "Sulis with bros", description: "", category_id: badminton.id, creator_id: u1.id, time: Date.tomorrow
+lenkki = Event.create title: "Lenkkeilyn alkeet", description: "Kumpulan ympäri", category_id: sports.id, creator_id: u3.id, time: Date.tomorrow
 
 u1.events << piano
 u2.events << lenkki
