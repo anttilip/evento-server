@@ -88,7 +88,7 @@ Rails.application.configure do
     allow do
       # TODO: These can be changed to match only specific urls like flai.xyz/evento
       origins '*'
-      resource '*', :headers => :any, :methods => [:get, :post, :options]
+      resource '*', :headers => :any, :methods => [:get, :post, :options, :delete]
     end
   end
 end
