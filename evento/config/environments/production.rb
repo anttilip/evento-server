@@ -80,8 +80,8 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   # Config rate-limit
-  config.middleware.use Rack::Throttle::Minute, :max => 60
-  config.middleware.use Rack::Throttle::Hourly, :max => 1500
+  config.middleware.use Rack::Throttle::Minute, :max => 180
+  config.middleware.use Rack::Throttle::Hourly, :max => 3000
 
   # Config Cross-Origin Resource Sharing
   config.middleware.insert_before 0, Rack::Cors do
