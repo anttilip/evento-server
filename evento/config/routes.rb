@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   get '/events/:id/attendees', to: 'events#attendees'
   post '/events/:id/attendees', to: 'events#add_attendee'
+  delete '/events/:id/attendees', to: 'events#remove_attendee'
   get '/users/:id/events', to: 'users#events'
   get '/categories/:id/events', to: 'categories#events'
   get '/categories/:id/subcategories', to: 'categories#subcategories'

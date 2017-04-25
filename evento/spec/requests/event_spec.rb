@@ -30,6 +30,11 @@ RSpec.describe "Event API" do
       post "/events/#{event.id}/attendees", params: { user_id: user.id }.to_json
       expect(response.status).to eq(401)
     end
+
+    it 'returns 401 when delete /events/:id/attendees is called' do
+      delete "/events/#{event.id}/attendees", params: { user_id: user.id }.to_json
+      expect(response.status).to eq(401)
+    end
   end
 
   context 'with authentication' do
@@ -157,29 +162,67 @@ RSpec.describe "Event API" do
       expect(response.status).to eq(401)
     end
 
-    it 'returns 204 when post /events/:id/attendees is called with self' do
-      post "/events/#{event.id}/attendees", params: { user_id: user.id }.to_json, headers: header
+    it 'returns 204 and adds user to attendees when post /events/:id/attendees' do
+      post "/events/#{event.id}/attendees", headers: header
 
       expect(response.status).to eq(204)
       expect(event.attendees).to include(user)
     end
 
-    it 'returns 304 when post /events/:id/attendees is called with self if already attending' do
-      post "/events/#{event.id}/attendees", params: { user_id: user.id }.to_json, headers: header
+    it 'returns 200 when post /events/:id/attendees is called if already attending' do
+      post "/events/#{event.id}/attendees", headers: header
       expect(response.status).to eq(204)
       expect(event.attendees).to include(user)
 
       # try again
-      post "/events/#{event.id}/attendees", params: { user_id: user.id }.to_json, headers: header
+      post "/events/#{event.id}/attendees", headers: header
       expect(response.status).to eq(200)
     end
 
-    it 'returns 401 when post /events/:id/attendees is called with another user' do
+    it 'does not add other user to attendees when post /events/:id/attendees is called with another user' do
       other_user = FactoryGirl.create(:user)
       post "/events/#{event.id}/attendees", params: { user_id: other_user.id }.to_json, headers: header
 
       expect(response.status).to eq(204)
       expect(event.attendees).not_to include(other_user)
+    end
+
+    it 'returns 204 and removes user as attendee when delete /events/:id/attendees' do
+      event.attendees << user
+      expect(Event.find(event.id).attendees).to include(user)
+      delete "/events/#{event.id}/attendees", headers: header
+
+      expect(response.status).to eq(204)
+      expect(Event.find(event.id).attendees).not_to include(user)
+    end
+
+    it 'returns 200 when delete /events/:id/attendees is called if already attending' do
+      event.attendees << user
+      expect(Event.find(event.id).attendees).to include(user)
+
+      delete "/events/#{event.id}/attendees", headers: header
+      expect(response.status).to eq(204)
+      expect(Event.find(event.id).attendees).not_to include(user)
+
+      # try again
+      delete "/events/#{event.id}/attendees", headers: header
+      expect(response.status).to eq(200)
+      expect(Event.find(event.id).attendees).not_to include(user)
+    end
+
+    it 'returns 204 and does not remove other user attending an event when delete /events/:id/attendees is called with another user' do
+      other_user = FactoryGirl.create(:user)
+      event.attendees << other_user
+      expect(Event.find(event.id).attendees).to include(other_user)
+
+      event.attendees << user
+      expect(Event.find(event.id).attendees).to include(user)
+
+      delete "/events/#{event.id}/attendees", params: { user_id: other_user.id }.to_json, headers: header
+
+      expect(response.status).to eq(204)
+      expect(Event.find(event.id).attendees).not_to include(user)
+      expect(Event.find(event.id).attendees).to include(other_user)
     end
   end
 

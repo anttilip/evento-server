@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :update, :destroy, :attendees, :add_attendee]
+  before_action :set_event, only: [:show, :update, :destroy, :attendees, :add_attendee, :remove_attendee]
   skip_before_action :authenticate_request, only: [:index, :show, :attendees]
 
   # GET /events
@@ -27,6 +27,16 @@ class EventsController < ApplicationController
       @event.attendees << @current_user
       @event.save
       render status: 204
+    end
+  end
+
+  # DELETE /events/:id/attendees
+  def remove_attendee
+    if @event.attendees.include?(@current_user)
+      @event.attendees.delete(@current_user)
+      render status: 204
+    else
+      render json: { message: 'You are not attending this event' }, status: 200
     end
   end
 
