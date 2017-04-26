@@ -44,4 +44,11 @@ Rails.application.configure do
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+  config.middleware.insert_before 0, Rack::Cors do
+    allow do
+      # TODO: These can be changed to match only specific urls like flai.xyz/evento
+      origins '*'
+      resource '*', :headers => :any, :methods => :any
+    end
+  end
 end
