@@ -3,6 +3,9 @@ Rails.application.routes.draw do
   resources :categories
   resources :users
 
+  # Redirect to documentation
+  root :to => redirect('https://anttilip.github.io/evento-server/')
+
   get '/events/:id/attendees', to: 'events#attendees'
   post '/events/:id/attendees', to: 'events#add_attendee'
   delete '/events/:id/attendees', to: 'events#remove_attendee'
