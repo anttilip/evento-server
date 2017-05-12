@@ -12,14 +12,14 @@ RSpec.describe Category, type: :model do
     too_short = FactoryGirl.build(:category, name: '')
 
     expect(too_short).not_to be_valid
-    expect(too_short.save).to be_falsey 
+    expect(too_short.save).to be_falsey
   end
 
   it "is not saved with too long name" do
     too_long = FactoryGirl.build(:category, name: 'this is waaay too long name for a category')
 
     expect(too_long).not_to be_valid
-    expect(too_long.save).to be_falsey 
+    expect(too_long.save).to be_falsey
   end
 
   it "get_subcategories returns subcategories" do

@@ -6,8 +6,8 @@ class Event < ApplicationRecord
   has_and_belongs_to_many :users  # Attendees
 
   # Check that objects themselves are present, not only id:s
-  validates :category, :user, :time, presence: true  
-  
+  validates :category, :user, :time, presence: true
+
   validate :time_must_be_in_the_future
   validates :title, presence: true, length: { minimum: 3, maximum: 50 }
 

@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   has_secure_password
   has_and_belongs_to_many :events
-  
+
   validates :name, presence: true, length: { minimum: 3, maximum: 40 }
 
   # we could do some sophisticated email validity check with regex, but lets not

@@ -75,7 +75,7 @@ describe "Category API" do
     expect(json[3]['category']['id']).to eq(category.id)
   end
 
-  it "returns empty array if category does not have events" do  
+  it "returns empty array if category does not have events" do
     get "/categories/#{category.id}/events"
 
     # test for the 200 status-code

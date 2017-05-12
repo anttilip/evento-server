@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   get '/users/:id/events', to: 'users#events'
   get '/categories/:id/events', to: 'categories#events'
   get '/categories/:id/subcategories', to: 'categories#subcategories'
+  get '/authentication', to: 'authentication#is_authenticated'
   post '/authenticate', to: 'authentication#authenticate'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

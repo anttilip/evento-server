@@ -42,7 +42,7 @@ class EventsController < ApplicationController
 
   # POST /events
   def create
-    # Add @current_user.id to create_params. Only user who sent the request 
+    # Add @current_user.id to create_params. Only user who sent the request
     # should be the creator
     @event = Event.new(event_params.merge(creator_id: @current_user.id))
 

@@ -19,7 +19,7 @@ gem 'active_model_serializers'
 # Use bcrypt for authentiacion
 gem 'bcrypt'
 
-# JSON Web Token 
+# JSON Web Token
 gem 'jwt'
 
 # Use SimpleCommand for commands
@@ -41,10 +41,10 @@ group :development, :test do
 
   # Use RSpec for tests
   gem 'rspec-rails', '>= 3.5.0'
-  
+
   # factory_girl_rails gem
   gem 'factory_girl_rails'
-  
+
   # Faker for tests
   gem 'faker'
 

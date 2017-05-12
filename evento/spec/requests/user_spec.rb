@@ -42,12 +42,12 @@ RSpec.describe "User API" do
     end
   end
 
-  context 'with authentication' do      
+  context 'with authentication' do
     let(:header) { { Authorization: json["auth_token"], CONTENT_TYPE: "application/json" } }
 
-    before(:each) do 
+    before(:each) do
       post '/authenticate', params: { email: user.email, password: user.password }
-      expect(response.status).to eq(200)  
+      expect(response.status).to eq(200)
       expect(json["auth_token"]).not_to eq(nil)
     end
 
@@ -82,7 +82,7 @@ RSpec.describe "User API" do
       expect(response.status).to eq(200)
       expect(user.name).to eq("NewName")
     end
-    
+
     it 'returns 404 when put /users/-1/ is requested' do
       put "/users/-1", params: { name: "NewName" }.to_json, headers: header
       expect(response.status).to be(404)
