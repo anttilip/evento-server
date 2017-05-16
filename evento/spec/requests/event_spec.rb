@@ -249,6 +249,7 @@ RSpec.describe "Event API" do
       expect(json['title']).to eq(event.title)
       expect(json['creator']['id']).to eq(event.creator_id)
       expect(json['category']['id']).to eq(event.category_id)
+      expect(json['attendee_count']).to eq(event.attendees.count)
     end
 
     it 'returns 404 when event is not found' do
