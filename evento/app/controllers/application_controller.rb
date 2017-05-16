@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::API
-  before_action :authenticate_request
+  before_action :authenticate_request, :set_server_url
   attr_reader :current_user
 
   rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
@@ -18,5 +18,9 @@ class ApplicationController < ActionController::API
 
   def render_not_found_response(exception)
     render json: { error: exception.message }, status: :not_found
+  end
+
+  def set_server_url
+    $server_url = request.base_url
   end
 end
