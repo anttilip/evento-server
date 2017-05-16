@@ -10,6 +10,52 @@ RSpec.describe Event, type: :model do
     expect(event.save).to be_truthy
   end
 
+  it "is created with default image url if not specified" do
+    expect(event).to be_valid
+    expect(event.save).to be_truthy
+    expect(event.image_url.present?).to be_truthy
+  end
+
+  it "is created with specific image url if specified" do
+    url = "http://test.com/img.jpg"
+    with_image_url = FactoryGirl.build(
+      :event,
+      creator_id: user.id,
+      category_id: category.id,
+      image_url: url
+    )
+
+    expect(with_image_url).to be_valid
+    expect(event.save).to be_truthy
+    expect(with_image_url.image_url).to eq(url)
+  end
+
+  it "is not saved with image url not ending with image extension" do
+    url = "http://test.com/img.not_image_extension"
+    with_invalid_image_url = FactoryGirl.build(
+      :event,
+      creator_id: user.id,
+      category_id: category.id,
+      image_url: url
+    )
+
+    expect(with_invalid_image_url).not_to be_valid
+    expect(with_invalid_image_url.save).to be_falsey
+  end
+
+  it "is not saved with image url not ending with image extension" do
+    url = "httsafp:/test.com!!--/img.not_image_extension"
+    with_invalid_image_url = FactoryGirl.build(
+      :event,
+      creator_id: user.id,
+      category_id: category.id,
+      image_url: url
+    )
+
+    expect(with_invalid_image_url).not_to be_valid
+    expect(with_invalid_image_url.save).to be_falsey
+  end
+
   it "is not saved without user existing" do
     without_creator = FactoryGirl.build(:event, creator_id: -1)
 

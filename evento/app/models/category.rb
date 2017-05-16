@@ -14,4 +14,7 @@ class Category < ApplicationRecord
     Category.where(parent_id: id)
   end
 
+  def get_default_image
+    '/images/categories/' + name.downcase + ".jpg"
+  end
 end
