@@ -5,13 +5,13 @@
 
 Rails back-end for evento.
 
-[**Try it out now!**](https://flai.xyz/evento/).
+[**Try it out now!**](https://anttilip.github.io/evento/).
 
 Backend is running in [heroku](https://evento-api.herokuapp.com/).
 
 [**Wiki**](https://github.com/anttilip/evento-server/wiki)
 
-[**Front-end repo**](https://github.com/JaakkoLipsanen/evento-web)
+[**Front-end repo**](https://github.com/anttilip/evento)
 
 ------------
 
